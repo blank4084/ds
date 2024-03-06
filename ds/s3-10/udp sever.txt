@@ -1,0 +1,40 @@
+package udpapplication;
+import java.io.*;
+import java.net.*;
+public class UDPServer extends javax.swing.JFrame implements
+Runnable{ private void
+StartButtonActionPerformed(java.awt.event.ActionEvent evt) {
+// TODO add your handling code here:
+Thread thread = new Thread(this, "server");
+StartButton.setEnabled(false);
+thread.start();
+MessageArea.append("Server Started");
+}
+@Override
+public void run() {
+String ipAddress = IPField.getText();
+int portNo = Integer.parseInt(PortField.getText());
+try {
+DatagramSocket ds = new DatagramSocket(portNo,
+InetAddress.getByName(ipAddress));
+40);
+while(true) {
+byte[] rcvMessage = new byte[40];
+DatagramPacket rcvPacket = new DatagramPacket(rcvMessage,
+ds.receive(rcvPacket);
+InetAddress clientIP = rcvPacket.getAddress();
+int clientPort = rcvPacket.getPort();
+String received = new String(rcvPacket.getData());
+MessageArea.append("\nClient " + clientIP + ": " +
+received + "\n");
+byte[] sndmsg = received.getBytes();
+DatagramPacket sndPacket = new DatagramPacket(sndmsg,
+sndmsg.length, clientIP, clientPort);
+ds.send(sndPacket);
+}
+//ds.close();
+} catch (Exception e)
+{ e.printStackTrace();
+}
+}
+}

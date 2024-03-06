@@ -1,0 +1,63 @@
+import java.io.*;
+import java.net.*;
+import java.lang.Runnable;
+
+private void StartButtonActionPerformed(java.awt.event.ActionEvent evt) {                                            
+        Thread thread = new Thread(this, "server");
+        StartButton.setEnabled(false);
+        thread.start();
+        ResponseField.append("Server Listening... \n");
+    }  
+
+@Override
+    public void run() {
+        String ip = ServerIPField.getText();
+        int port = Integer.parseInt(ServerPortField.getText());
+        try {
+            ServerSocket ss = new ServerSocket(port, 5, InetAddress.getByName(ip));
+            
+            while(true) {
+                Socket s = ss.accept();
+                DataInputStream dis = new DataInputStream(s.getInputStream());
+                DataOutputStream dos = new DataOutputStream(s.getOutputStream());
+                
+                String msgReceived = dis.readUTF();
+                ResponseField.append("\nFriend: " + msgReceived);
+                
+                s.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+                                               
+
+    private void SendButtonActionPerformed(java.awt.event.ActionEvent evt) {                                           
+        // TODO add your handling code here:
+        String ip = ClientIPField.getText();
+        int port = Integer.parseInt(ClientPortField.getText());
+        
+        try {
+            Socket s = new Socket(InetAddress.getByName(ip), port);
+            
+            DataInputStream dis = new DataInputStream(s.getInputStream());
+            DataOutputStream dos = new DataOutputStream(s.getOutputStream());
+            
+            while(true) {
+                String msg = MessageField.getText();
+                dos.writeUTF(msg);
+                ResponseField.append("\nYou: " + msg);
+                String response = dis.readUTF();
+                if(msg.equals("/Exit")) {
+                    s.close();
+                    break;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        
+    }                                          
+     

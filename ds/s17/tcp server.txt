@@ -1,0 +1,37 @@
+import java.net.*;
+import java.io.*;
+import java.lang.Runnable;
+public class TCPEchoServer extends javax.swing.JFrame implements Runnable
+{p
+rivate void StartButtonActionPerformed(java.awt.event.ActionEvent evt) {
+// TODO add your handling code here:
+Thread t = new Thread(this, "Server");
+t.start();
+StartButton.setEnabled(false);
+ComWindow.append("Server Listening\n");
+}
+@Override
+public void run() {
+String ip = IPAddressField.getText();
+int port = Integer.parseInt(PortNumber.getText());
+try{
+ServerSocket ss = new ServerSocket(port, 5,
+InetAddress.getByName(ip));
+while(true){
+Socket s = ss.accept();
+DataInputStream dis = new
+DataInputStream(s.getInputStream());
+DataOutputStream dos = new
+DataOutputStream(s.getOutputStream());
+String req = dis.readUTF();
+ComWindow.append(req + "\n");
+dos.writeUTF(req);
+s.close();
+}
+}
+catch(Exception
+e){ e.printStackTrace()
+;
+}
+}
+}

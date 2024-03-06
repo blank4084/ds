@@ -1,0 +1,24 @@
+struct strs{
+	string str1<>;
+	string str2<>;
+};
+program concat_prog{
+	version concat_ver{
+	string concat(strs)=1;
+}=1;
+}=0x20000201;
+
+// client
+
+concat_1_arg.str1=(char*)malloc(sizeof(char)*32);
+concat_1_arg.str2=(char*)malloc(sizeof(char)*32);
+printf("\nEnter two string to concatenate:");
+scanf("%s%s",concat_1_arg.str1,concat_1_arg.str2);
+
+printf("\nresult=%s",*result_1);
+
+//server
+
+result=(char*)malloc(sizeof(char)*100);
+strcpy(result,argp->str1);
+strcat(result,argp->str2);

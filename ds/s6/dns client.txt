@@ -1,0 +1,25 @@
+import java.net.*;
+import java.io.*;
+public class NameClient extends javax.swing.JFrame {
+private void sendButtonActionPerformed(java.awt.event.ActionEvent evt) {
+// TODO add your handling code here:
+String ipAddress = ipField.getText();
+int portNo = Integer.parseInt(portField.getText());
+String url = urlField.getText();
+try{
+Socket s = new Socket(InetAddress.getByName(ipAddress),
+portNo);
+DataOutputStream dos = new
+DataOutputStream(s.getOutputStream());
+DataInputStream dis = new
+DataInputStream(s.getInputStream());) {
+dos.writeUTF(url);
+serverResponseArea.append(url);
+String response = dis.readUTF();
+serverResponseArea.append(": " + response +"\n");
+s.close();
+} catch(Exception e)
+{ e.printStackTrace();
+}
+}
+}

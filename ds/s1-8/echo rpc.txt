@@ -1,0 +1,21 @@
+//Specification file
+
+program echo_prg{
+version echo_ver{
+	string echo(string)=1;
+	}=1;
+}=0x20000021;
+
+//client
+
+echo_1_arg=(char*)malloc(sizeof(char)*25);
+printf("\nEnter a message:");
+scanf("%s",echo_1_arg);
+
+printf("result=%s",*result_1);
+
+// server
+
+result=(char*)malloc(sizeof(char)*25);
+strcpy(result,*argp);
+

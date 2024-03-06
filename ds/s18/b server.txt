@@ -1,0 +1,38 @@
+import java.net.*;
+import java.io.*;
+import java.lang.Runnable;
+public class BulletinBoardServer extends javax.swing.JFrame implements
+Runnable{
+private void StartServerButtonActionPerformed(java.awt.event.ActionEvent
+evt) {
+// TODO add your handling code here:
+Thread t = new Thread(this, "Server");
+t.start();
+StartServerButton.setEnabled(false);
+ResponseArea.append("Server Listening\n");
+}
+@Override
+public void run(){
+String ip = IPField.getText();
+int port = Integer.parseInt(PortField.getText());
+try{
+ServerSocket ss = new ServerSocket(port, 5,
+InetAddress.getByName(ip));
+while(true){
+Socket s = ss.accept();
+DataInputStream dis = new
+DataInputStream(s.getInputStream());
+DataOutputStream dos = new
+DataOutputStream(s.getOutputStream());
+String announcement = dis.readUTF();
+ResponseArea.append("\n" + announcement);
+dos.writeUTF("Received Message");
+s.close();
+}
+}
+catch(Exception
+e){ e.printStackTrace()
+;
+}
+}
+}}

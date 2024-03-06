@@ -1,0 +1,21 @@
+struct num{
+	int a;
+	int b;
+};
+program add_prog{
+	version add_ver{
+	int add(num)=1;
+	}=1;
+}=0x20000022;
+
+//client 
+printf("\nEnter two numbers:");
+scanf("%d%d",&add_1_arg.a,&add_1_arg.b);
+result_1=(int*)malloc(sizeof(int));
+result_1 = add_1(&add_1_arg, clnt);
+
+printf("\n %d + %d = %d",add_1_arg.a,add_1_arg.b,*result_1);
+
+//server
+
+result=argp->a+argp->b;

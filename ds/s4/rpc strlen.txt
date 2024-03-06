@@ -1,0 +1,20 @@
+program strl_prog{
+	version strl_ver{
+	int strl(string)=1;
+	}=1;
+}=0x20000022;
+
+//client
+
+strl_1_arg=(char*)malloc(sizeof(char)*40);
+printf("\nEnter a string:");
+scanf("%s",strl_1_arg);
+printf("\n input string is %s\n",strl_1_arg);
+result_1=(int*)malloc(sizeof(int));
+
+
+printf("length of %s is %d",strl_1_arg,*result_1);
+
+//server
+
+result=strlen(*argp);

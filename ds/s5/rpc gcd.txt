@@ -1,0 +1,28 @@
+struct num{
+	int a;
+	int b;
+};
+program gcd_prog{
+	version gcd_ver{
+	int gcd(num)=1;
+	}=1;
+}=0x20000021;
+
+//client
+
+printf("\nEnter two numbers:");
+scanf("%d%d",&gcd_1_arg.a,&gcd_1_arg.b);
+result_1 = gcd_1(&gcd_1_arg, clnt);
+
+printf("\ngcd of %d and %d is %d",gcd_1_arg.a,gcd_1_arg.b,*result_1);
+
+//server
+
+int temp;
+while(argp->a!=0)
+{t
+emp=argp->a;
+argp->a=argp->b%argp->a;
+argp->b=temp;
+}r
+esult=argp->b;

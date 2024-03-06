@@ -1,0 +1,92 @@
+Program:
+Interface:
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+public interface GcdInterface extends
+Remote{ int gcd(int a,int b) throws
+RemoteException;
+}
+Implementation:
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
+public class GcdImpl extends UnicastRemoteObject implements
+GcdInterface{public GcdImpl() throws RemoteException{
+}p
+ublic int gcd(int a,int b)
+{
+System.out.println("REMOTE SERVICE: Remote Client Request Message
+is : "+a+" and "+b);
+int temp;
+if(a>b)
+{
+temp=a;
+a=b;
+b=temp;
+}w
+hile(a!=0)
+{
+temp=a;
+a=b%a;
+b=temp;
+}r
+eturn b;
+}
+}
+Server:
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+import java.rmi.Naming;
+import java.net.MalformedURLException;
+import java.rmi.registry.LocateRegistry;
+public class GcdServer{
+public GcdServer() throws RemoteException{
+}p
+ublic static void main(String args[]) throws RemoteException
+{
+GcdImpl gcdObj=new GcdImpl();
+int port=Integer.parseInt(args[1]);
+try{
+LocateRegistry.createRegistry(port);
+System.out.println("\n RMI registry created \n");
+String host=args[0];
+String bindLocation="//"+host+":"+port+"/"+args[2];
+Naming.bind(bindLocation,gcdObj);
+System.out.println("\nRMI server ready at "+bindLocation);
+}c
+atch(Exception e)
+{
+e.printStackTrace();
+}
+}
+}
+Client:
+import java.rmi.*;
+import java.io.*;
+import java.net.MalformedURLException;
+public class GcdClient {
+public static void main(String args[])
+{
+String
+connectLocation="//"+args[0]+":"+Integer.parseInt(args[1])+"/"+args[2];
+GcdInterface gintf=null;
+try{
+System.out.println("\n Connecting the client at:
+"+connectLocation);
+gintf=(GcdInterface)Naming.lookup(connectLocation);
+BufferedReader br=new BufferedReader(new
+InputStreamReader(System.in));
+service:");
+System.out.println("\nCLI: Enter two numbers to send to remote
+int a=Integer.parseInt(br.readLine().trim());
+int b=Integer.parseInt(br.readLine().trim());
+int response=gintf.gcd(a,b);
+System.out.println("\n CLI: response from remote method
+is(gcd):"+response);
+}c
+atch(Exception e)
+{
+e.printStackTrace();
+}
+}
+}

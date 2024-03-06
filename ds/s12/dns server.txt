@@ -1,0 +1,51 @@
+import java.io.*;
+import java.net.*;
+import java.util.Scanner;
+import java.lang.Runnable;
+public class NameServer extends javax.swing.JFrame implements Runnable
+{private void startButtonActionPerformed(java.awt.event.ActionEvent
+evt) {
+// TODO add your handling code here:
+Thread t = new Thread(this, "server");
+startButton.setEnabled(false);
+t.start();
+}
+@Override
+public void run() {
+String ipAddress = ipField.getText();
+int portNo = Integer.parseInt(portField.getText());
+try{
+ServerSocket ss = new ServerSocket(portNo, 5,
+InetAddress.getByName(ipAddress));
+while(true){
+try(
+Socket s = ss.accept();
+DataOutputStream dos = new
+DataOutputStream(s.getOutputStream());
+DataInputStream dis = new
+DataInputStream(s.getInputStream());){
+String url = dis.readUTF();
+boolean found = false;
+File f = new
+File("C:\\Users\\admin\\Desktop\\NameServer42\\src\\nameserver42\\data.txt
+");
+Scanner scanner = new Scanner(f);
+while(scanner.hasNextLine()){
+String[] tokens = scanner.nextLine().split(" ");
+if(url.equals(tokens[1])){
+dos.writeUTF(tokens[0]);
+found = true;
+}
+}
+if(!found){
+dos.writeUTF("Not Found");
+}
+} catch(Exception e)
+{ e.printStackTrace();
+}
+}
+} catch(Exception e)
+{ e.printStackTrace();
+} //To change body of generated methods, choose Tools | Templates.
+}
+}

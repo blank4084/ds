@@ -1,0 +1,79 @@
+Program:
+Interface:
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+public interface ConcatInterface extends Remote{
+String concatenate(String s1,String s2) throws RemoteException;
+}
+Implementation:
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
+public class ConcatImpl extends UnicastRemoteObject implements
+ConcatInterface{
+public ConcatImpl() throws RemoteException{
+}p
+ublic String concatenate(String s1,String s2)
+{
+System.out.println("REMOTE SERVICE: Remote Client Request Message
+is : "+s1+" and "+s2);
+return s1+s2;
+}
+}
+Server:
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+import java.rmi.Naming;
+import java.net.MalformedURLException;
+import java.rmi.registry.LocateRegistry;
+public class ConcatServer{
+public ConcatServer() throws RemoteException{
+}p
+ublic static void main(String args[]) throws RemoteException
+{
+ConcatImpl concatObj=new ConcatImpl();
+int port=Integer.parseInt(args[1]);
+try{
+LocateRegistry.createRegistry(port);
+System.out.println("\n RMI registry created \n");
+String host=args[0];
+String bindLocation="//"+host+":"+port+"/"+args[2];
+Naming.bind(bindLocation,concatObj);
+System.out.println("\nRMI server ready at "+bindLocation);
+}c
+atch(Exception e)
+{
+e.printStackTrace();
+}
+}
+}
+Client:
+import java.rmi.*;
+import java.io.*;
+import java.net.MalformedURLException;
+public class ConcatClient {
+public static void main(String args[])
+{
+String
+connectLocation="//"+args[0]+":"+Integer.parseInt(args[1])+"/"+args[2];
+ConcatInterface cintf=null;
+try{
+System.out.println("\n Connecting the client at:
+"+connectLocation);
+cintf=(ConcatInterface)Naming.lookup(connectLocation);
+BufferedReader br=new BufferedReader(new
+InputStreamReader(System.in));
+System.out.println("\nCLI: Enter two strings to send to remote
+service:");
+String s1=br.readLine();
+String s2=br.readLine();
+String response=cintf.concatenate(s1,s2);
+System.out.println("\n CLI: response from remote method
+is:"+response);
+}c
+atch(Exception e)
+{
+e.printStackTrace();
+}
+}
+}

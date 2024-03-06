@@ -1,0 +1,23 @@
+import java.net.*;
+import java.io.*;
+public class BulletinBoardClient extends javax.swing.JFrame {
+private void SendButtonActionPerformed(java.awt.event.ActionEvent evt) {
+// TODO add your handling code here:
+String ip = IPField.getText();
+int port = Integer.parseInt(PortField.getText());
+String msg = MessageField.getText();
+try{
+Socket s = new Socket(InetAddress.getByName(ip), port);
+DataInputStream dis = new DataInputStream(s.getInputStream());
+DataOutputStream dos = new
+DataOutputStream(s.getOutputStream());
+dos.writeUTF(msg);
+String res = dis.readUTF();
+ResponseArea.append(res + "\n");
+s.close();
+}c
+atch(Exception
+e){ e.printStackTrace()
+;
+}
+}

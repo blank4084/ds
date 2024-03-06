@@ -1,0 +1,24 @@
+package tcpwellknown;
+import java.net.*;
+import java.io.*;
+public class TCPEchoClientWK extends javax.swing.JFrame {
+private void SendButtonActionPerformed(java.awt.event.ActionEvent evt) {
+// TODO add your handling code here:
+String ip = IPAddressField.getText();
+int port = Integer.parseInt(PortNumber.getText());
+String msg = RequestMessage.getText();
+try{
+Socket s = new Socket(InetAddress.getByName(ip), port);
+DataInputStream dis = new DataInputStream(s.getInputStream());
+DataOutputStream dos = new DataOutputStream(s.getOutputStream());
+dos.writeUTF(msg);
+String response = dis.readUTF();
+ServerResponse.append("Echo: " + msg + "\n");
+s.close();
+}c
+atch(Exception
+e){ e.printStackTrace()
+;
+}
+}
+}

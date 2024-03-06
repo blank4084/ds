@@ -1,0 +1,26 @@
+
+import java.io.*;
+import java.net.*;
+public class UDPClientWK extends javax.swing.JFrame {
+private void SendButtonActionPerformed(java.awt.event.ActionEvent evt) {
+// TODO add your handling code here:
+String ipAddress = IPField.getText();
+int portNo = Integer.parseInt(portField.getText());
+String message = MessageField.getText();
+try {
+DatagramSocket ds = new DatagramSocket();
+byte[] sndmsg = message.getBytes();
+DatagramPacket sndPacket = new DatagramPacket(sndmsg,
+sndmsg.length, InetAddress.getByName(ipAddress), portNo);
+ds.send(sndPacket);
+byte[] rcvmsg = new byte[40];
+DatagramPacket rcvPacket = new DatagramPacket(rcvmsg, 40);
+ds.receive(rcvPacket);
+String response = new String(rcvPacket.getData());
+ServerResponseArea.append("Received: " + response + "\n");
+ds.close();
+} catch (Exception e)
+{ e.printStackTrace();
+}
+}
+}
